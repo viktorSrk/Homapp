@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServerUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">client</a> &gt; <a href="index.source.html" class="el_package">client.utils</a> &gt; <span class="el_source">ServerUtils.java</span></div><h1>ServerUtils.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2021 Delft University of Technology
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package client.utils;
+
+import commons.Board;
+import commons.Card;
+import commons.Quote;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.Response;
+import org.glassfish.jersey.client.ClientConfig;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.simp.stomp.StompFrameHandler;
+import org.springframework.messaging.simp.stomp.StompHeaders;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.net.URL;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.function.Consumer;
+
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
+
+public class ServerUtils {
+
+    private static String server;
+    private static String httpUrl;
+
+    public static StompSession session;
+<span class="pc" id="L53">    private StandardWebSocketClient client = new StandardWebSocketClient();</span>
+<span class="pc" id="L54">    private WebSocketStompClient stomp = new WebSocketStompClient(client);</span>
+
+<span class="nc" id="L56">    public ServerUtils() {</span>
+<span class="nc" id="L57">    }</span>
+<span class="fc" id="L58">    public ServerUtils(WebSocketStompClient stomp) {</span>
+<span class="fc" id="L59">        this.stomp = stomp;</span>
+<span class="fc" id="L60">    }</span>
+
+    public static String getServer() {
+<span class="fc" id="L63">        return server;</span>
+    }
+
+    public String getHttpUrl() {
+<span class="fc" id="L67">        return httpUrl;</span>
+    }
+
+    public void setServer(String server) throws Exception {
+<span class="fc" id="L71">        this.server = server;</span>
+<span class="fc" id="L72">        httpUrl = &quot;http://&quot; + server;</span>
+<span class="fc" id="L73">        session = connect(&quot;ws://&quot;+server+&quot;/websocket&quot;);</span>
+<span class="fc" id="L74">    }</span>
+
+    public void getQuotesTheHardWay() throws IOException {
+<span class="nc" id="L77">        var url = new URL(&quot;http://localhost:8080/api/quotes&quot;);</span>
+<span class="nc" id="L78">        var is = url.openConnection().getInputStream();</span>
+<span class="nc" id="L79">        var br = new BufferedReader(new InputStreamReader(is));</span>
+        String line;
+<span class="nc bnc" id="L81" title="All 2 branches missed.">        while ((line = br.readLine()) != null) {</span>
+<span class="nc" id="L82">            System.out.println(line);</span>
+        }
+<span class="nc" id="L84">    }</span>
+
+    public List&lt;Quote&gt; getQuotes() {
+<span class="nc" id="L87">        return ClientBuilder.newClient(new ClientConfig()) //</span>
+<span class="nc" id="L88">                .target(httpUrl).path(&quot;api/quotes&quot;) //</span>
+<span class="nc" id="L89">                .request(APPLICATION_JSON) //</span>
+<span class="nc" id="L90">                .accept(APPLICATION_JSON) //</span>
+<span class="nc" id="L91">                .get(new GenericType&lt;List&lt;Quote&gt;&gt;() {});</span>
+    }
+
+    public Quote addQuote(Quote quote) {
+<span class="nc" id="L95">        return ClientBuilder.newClient(new ClientConfig()) //</span>
+<span class="nc" id="L96">                .target(httpUrl).path(&quot;api/quotes&quot;) //</span>
+<span class="nc" id="L97">                .request(APPLICATION_JSON) //</span>
+<span class="nc" id="L98">                .accept(APPLICATION_JSON) //</span>
+<span class="nc" id="L99">                .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);</span>
+    }
+
+    public List&lt;commons.List&gt; getLists() {
+<span class="nc" id="L103">        return ClientBuilder.newClient(new ClientConfig()) //</span>
+<span class="nc" id="L104">                .target(httpUrl).path(&quot;api/lists&quot;) //</span>
+<span class="nc" id="L105">                .request(APPLICATION_JSON) //</span>
+<span class="nc" id="L106">                .accept(APPLICATION_JSON) //</span>
+<span class="nc" id="L107">                .get(new GenericType&lt;&gt;() {});</span>
+    }
+
+    public List&lt;Board&gt; getBoards() {
+<span class="nc" id="L111">        return ClientBuilder.newClient(new ClientConfig()) //</span>
+<span class="nc" id="L112">                .target(httpUrl).path(&quot;api/boards&quot;) //</span>
+<span class="nc" id="L113">                .request(APPLICATION_JSON) //</span>
+<span class="nc" id="L114">                .accept(APPLICATION_JSON) //</span>
+<span class="nc" id="L115">                .get(new GenericType&lt;&gt;() {</span>
+                });
+    }
+    public Board getBoardById(long id) {
+<span class="nc" id="L119">        return ClientBuilder.newClient(new ClientConfig()) //</span>
+<span class="nc" id="L120">                .target(httpUrl).path(&quot;api/boards/&quot;+id) //</span>
+<span class="nc" id="L121">                .request(APPLICATION_JSON) //</span>
+<span class="nc" id="L122">                .accept(APPLICATION_JSON) //</span>
+<span class="nc" id="L123">                .get(new GenericType&lt;&gt;() {</span>
+                });
+    }
+
+    public Board addBoard(Board board) {
+<span class="nc" id="L128">        return ClientBuilder.newClient(new ClientConfig())</span>
+<span class="nc" id="L129">                .target(httpUrl).path(&quot;api/boards/&quot;)</span>
+<span class="nc" id="L130">                .request(APPLICATION_JSON)</span>
+<span class="nc" id="L131">                .accept(APPLICATION_JSON)</span>
+<span class="nc" id="L132">                .post(Entity.entity(board, APPLICATION_JSON), Board.class);</span>
+    }
+
+    public commons.List addList(commons.List list) {
+<span class="nc" id="L136">        return ClientBuilder.newClient(new ClientConfig()) //</span>
+<span class="nc" id="L137">                .target(httpUrl).path(&quot;api/lists/&quot;) //</span>
+<span class="nc" id="L138">                .request(APPLICATION_JSON) //</span>
+<span class="nc" id="L139">                .accept(APPLICATION_JSON) //</span>
+<span class="nc" id="L140">                .post(Entity.entity(list, APPLICATION_JSON), commons.List.class);</span>
+    }
+
+    public commons.List changeList(commons.List list) {
+<span class="nc" id="L144">        var id = list.getId();</span>
+<span class="nc" id="L145">        return ClientBuilder.newClient(new ClientConfig()) //</span>
+<span class="nc" id="L146">                .target(server).path(&quot;api/lists/&quot; + id) //</span>
+<span class="nc" id="L147">                .request(APPLICATION_JSON) //</span>
+<span class="nc" id="L148">                .accept(APPLICATION_JSON) //</span>
+<span class="nc" id="L149">                .put(Entity.entity(list, APPLICATION_JSON), commons.List.class);</span>
+    }
+    public commons.Card addCard(commons.Card card, Long listId) {
+<span class="nc" id="L152">        return ClientBuilder.newClient(new ClientConfig()) //</span>
+<span class="nc" id="L153">                .target(httpUrl).path(&quot;api/cards/add/&quot; + listId) //</span>
+<span class="nc" id="L154">                .request(APPLICATION_JSON) //</span>
+<span class="nc" id="L155">                .accept(APPLICATION_JSON) //</span>
+<span class="nc" id="L156">                .post(Entity.entity(card, APPLICATION_JSON), commons.Card.class);</span>
+    }
+
+    public List&lt;commons.Card&gt; getCards() {
+<span class="nc" id="L160">        return ClientBuilder.newClient(new ClientConfig()) //</span>
+<span class="nc" id="L161">                .target(httpUrl).path(&quot;api/cards&quot;) //</span>
+<span class="nc" id="L162">                .request(APPLICATION_JSON) //</span>
+<span class="nc" id="L163">                .accept(APPLICATION_JSON) //</span>
+<span class="nc" id="L164">                .get(new GenericType&lt;&gt;() {});</span>
+    }
+
+    public commons.Card replaceCard(commons.Card card, long id) {
+<span class="nc" id="L168">        return ClientBuilder.newClient(new ClientConfig())</span>
+<span class="nc" id="L169">                .target(httpUrl).path(&quot;api/cards/&quot;)</span>
+<span class="nc" id="L170">                .request(APPLICATION_JSON)</span>
+<span class="nc" id="L171">                .accept(APPLICATION_JSON)</span>
+<span class="nc" id="L172">                .put(Entity.entity(card, APPLICATION_JSON), commons.Card.class);</span>
+    }
+
+    //establishes a STOMP message format websocket session
+    public StompSession connect(String url) throws Exception {
+<span class="fc" id="L177">        stomp.setMessageConverter(new MappingJackson2MessageConverter());</span>
+        try {
+<span class="fc" id="L179">            return session = stomp.connect(url, new StompSessionHandlerAdapter() {}).get();</span>
+        }
+<span class="nc" id="L181">        catch (InterruptedException e) {</span>
+<span class="nc" id="L182">            Thread.currentThread().interrupt();</span>
+        }
+<span class="nc" id="L184">        catch (ExecutionException e) {</span>
+<span class="nc" id="L185">            throw new Exception(e);</span>
+<span class="nc" id="L186">        }</span>
+<span class="nc" id="L187">        throw new IllegalStateException();</span>
+    }
+    public &lt;T&gt; void registerForUpdates(String dest, Class&lt;T&gt; type, Consumer&lt;T&gt; consumer) {
+        try {
+<span class="nc" id="L191">            session.subscribe(dest, new StompFrameHandler() {</span>
+                @Override
+                public Type getPayloadType(StompHeaders headers) {
+<span class="nc" id="L194">                    return type;</span>
+                }
+
+                @Override
+                public void handleFrame(StompHeaders headers, Object payload) {
+<span class="nc" id="L199">                    consumer.accept((T) payload);</span>
+<span class="nc" id="L200">                }</span>
+
+            });
+        }
+<span class="nc" id="L204">        catch (Exception e) {</span>
+
+<span class="nc" id="L206">        }</span>
+<span class="nc" id="L207">    }</span>
+
+
+    public void send(String dest, Object o) {
+<span class="fc" id="L211">        session.send(dest, o);</span>
+<span class="fc" id="L212">    }</span>
+
+    public commons.Card replaceCard(commons.Card card) {
+<span class="nc" id="L215">        Long id = card.getId();</span>
+<span class="nc" id="L216">        return ClientBuilder.newClient(new ClientConfig())</span>
+<span class="nc" id="L217">                .target(httpUrl).path(&quot;api/cards/&quot; + id)</span>
+<span class="nc" id="L218">                .request(APPLICATION_JSON)</span>
+<span class="nc" id="L219">                .accept(APPLICATION_JSON)</span>
+<span class="nc" id="L220">                .put(Entity.entity(card, APPLICATION_JSON), commons.Card.class);</span>
+    }
+
+<span class="fc" id="L223">    private static final ExecutorService EXEC = Executors.newSingleThreadExecutor();</span>
+
+    public void registerForUpdates(Consumer&lt;Card&gt; consumer) {
+<span class="nc" id="L226">        EXEC.submit(() -&gt; {</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">            while (!Thread.interrupted()) {</span>
+                try {
+<span class="nc" id="L229">                    var res = ClientBuilder.newClient(new ClientConfig())</span>
+<span class="nc" id="L230">                            .target(httpUrl).path(&quot;api/cards/updates&quot;)</span>
+<span class="nc" id="L231">                            .request(APPLICATION_JSON)</span>
+<span class="nc" id="L232">                            .accept(APPLICATION_JSON)</span>
+<span class="nc" id="L233">                            .get(Response.class);</span>
+
+<span class="nc bnc" id="L235" title="All 2 branches missed.">                    if (res == null) {</span>
+<span class="nc" id="L236">                        System.out.println(&quot;Response is null&quot;);</span>
+<span class="nc" id="L237">                        continue;</span>
+                    }
+
+<span class="nc bnc" id="L240" title="All 2 branches missed.">                    if (res.getStatus() == 204) {</span>
+<span class="nc" id="L241">                        System.out.println(&quot;TimeOut&quot;);</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">                    } else if (res.getStatus() == 200) {</span>
+<span class="nc" id="L243">                        System.out.println(&quot;change registered&quot;);</span>
+<span class="nc" id="L244">                        var c = res.readEntity(Card.class);</span>
+<span class="nc" id="L245">                        consumer.accept(c);</span>
+<span class="nc" id="L246">                    } else {</span>
+<span class="nc" id="L247">                        System.out.println(&quot;Other error&quot;);</span>
+                    }
+<span class="nc" id="L249">                } catch (Exception e) {</span>
+<span class="nc" id="L250">                    System.out.println(&quot;Exception occurred: &quot; + e.getMessage());</span>
+<span class="nc" id="L251">                }</span>
+            }
+<span class="nc" id="L253">        });</span>
+<span class="nc" id="L254">    }</span>
+
+
+
+    public void stop(){
+<span class="nc" id="L259">        EXEC.shutdownNow();</span>
+<span class="nc" id="L260">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AddCardCtrl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">client</a> &gt; <a href="index.source.html" class="el_package">client.scenes</a> &gt; <span class="el_source">AddCardCtrl.java</span></div><h1>AddCardCtrl.java</h1><pre class="source lang-java linenums">package client.scenes;
+
+import client.utils.ServerUtils;
+import com.google.inject.Inject;
+import commons.Card;
+import commons.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+
+
+public class AddCardCtrl {
+
+    private final ServerUtils server;
+
+    private final MainCtrl mainCtrl;
+
+    @FXML
+    private TextField titleTextField;
+
+    @FXML
+    private TextArea descriptionTextField;
+
+    @FXML
+    private TextField taskTextField;
+
+    @FXML
+    private ListView&lt;String&gt; tasksListView;
+
+    @FXML
+    private Button addTaskButton;
+
+    @FXML
+    private Button addButton;
+
+    @FXML
+    private Button backButton;
+
+<span class="nc" id="L43">    private final ObservableList&lt;String&gt; tasks = FXCollections.observableArrayList();</span>
+
+    private commons.List list;
+
+
+    @Inject
+<span class="nc" id="L49">    public AddCardCtrl(ServerUtils server, MainCtrl mainCtrl) {</span>
+<span class="nc" id="L50">        this.server = server;</span>
+<span class="nc" id="L51">        this.mainCtrl = mainCtrl;</span>
+<span class="nc" id="L52">    }</span>
+
+    public void setList(List list) {
+<span class="nc" id="L55">        this.list = list;</span>
+<span class="nc" id="L56">    }</span>
+
+    public void back() {
+<span class="nc" id="L59">        clearFields();</span>
+<span class="nc" id="L60">        mainCtrl.closeAddCard();</span>
+<span class="nc" id="L61">    }</span>
+
+    private void clearFields() {
+<span class="nc" id="L64">        descriptionTextField.clear();</span>
+<span class="nc" id="L65">        titleTextField.clear();</span>
+<span class="nc" id="L66">    }</span>
+
+    @FXML
+    public void addTask() {
+<span class="nc" id="L70">        System.out.println(&quot;Button Add Task has been clicked!&quot;);</span>
+<span class="nc" id="L71">        String task = taskTextField.getText();</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        if(!task.isEmpty()) {</span>
+<span class="nc" id="L73">            tasks.add(task);</span>
+<span class="nc" id="L74">            tasksListView.setItems(FXCollections.observableList(tasks));</span>
+<span class="nc" id="L75">            taskTextField.clear();</span>
+        }
+<span class="nc" id="L77">    }</span>
+
+    @FXML
+    public void add() {
+<span class="nc" id="L81">        System.out.println(&quot;Button Add has been clicked!&quot;);</span>
+<span class="nc" id="L82">        String name = titleTextField.getText();</span>
+<span class="nc" id="L83">        Card card = new Card(name, list, list.getCards().size());</span>
+<span class="nc" id="L84">        String description = descriptionTextField.getText();</span>
+<span class="nc" id="L85">        card.setDescription(description);</span>
+<span class="nc" id="L86">        this.server.send(&quot;/app/cards/add/&quot; + list.getId(), card);</span>
+<span class="nc" id="L87">        clearFields();</span>
+<span class="nc" id="L88">        mainCtrl.closeAddCard();</span>
+<span class="nc" id="L89">    }</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="server.api.QuoteControllerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-03-26T13:25:44" hostname="viktor-srk.local" time="0.002">
+  <properties/>
+  <testcase name="cannotAddNullPerson()" classname="server.api.QuoteControllerTest" time="0.001"/>
+  <testcase name="randomSelection()" classname="server.api.QuoteControllerTest" time="0.0"/>
+  <testcase name="databaseIsUsed()" classname="server.api.QuoteControllerTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

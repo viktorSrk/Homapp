@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ListController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">server</a> &gt; <a href="index.source.html" class="el_package">server.api</a> &gt; <span class="el_source">ListController.java</span></div><h1>ListController.java</h1><pre class="source lang-java linenums">package server.api;
+
+import java.util.List;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import server.database.ListRepository;
+
+@RestController
+@RequestMapping(&quot;/api/lists&quot;)
+public class ListController {
+
+    private final ListRepository repo;
+
+<span class="fc" id="L14">    public ListController(ListRepository repo) {</span>
+<span class="fc" id="L15">        this.repo = repo;</span>
+<span class="fc" id="L16">    }</span>
+
+    @GetMapping({&quot;&quot;, &quot;/&quot;})
+    public List&lt;commons.List&gt; getAll() {
+<span class="fc" id="L20">        return repo.findAll();</span>
+    }
+
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;commons.List&gt; getListById(@PathVariable(&quot;id&quot;) long id) {
+<span class="nc bnc" id="L25" title="All 4 branches missed.">        if (id &lt; 0 || !repo.existsById(id))</span>
+<span class="nc" id="L26">            return ResponseEntity.badRequest().build();</span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">        commons.List res = repo.findById(id).isPresent() ? repo.findById(id).get() : null;</span>
+<span class="nc" id="L28">        return ResponseEntity.ok(res);</span>
+    }
+
+    @PostMapping({&quot;&quot;, &quot;/&quot;})
+    public ResponseEntity&lt;commons.List&gt; addList(@RequestBody commons.List list) {
+<span class="pc bpc" id="L33" title="2 of 4 branches missed.">        if (list == null || isNullOrEmpty(list.getTitle()))</span>
+<span class="nc" id="L34">            return ResponseEntity.badRequest().build();</span>
+
+<span class="fc" id="L36">        commons.List saved = repo.save(list);</span>
+<span class="fc" id="L37">        return ResponseEntity.ok(saved);</span>
+    }
+
+    @DeleteMapping({&quot;&quot;, &quot;/&quot;})
+    public ResponseEntity&lt;commons.List&gt; removeList(@RequestBody commons.List list){
+<span class="pc bpc" id="L42" title="3 of 6 branches missed.">        if (list == null || isNullOrEmpty(list.getTitle()) || !repo.existsById(list.getId()))</span>
+<span class="nc" id="L43">            return ResponseEntity.badRequest().build();</span>
+
+<span class="fc" id="L45">        repo.delete(list);</span>
+<span class="fc" id="L46">        return ResponseEntity.ok(list);</span>
+    }
+
+    @PutMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;commons.List&gt; replaceList(@RequestBody commons.List list,
+                                                    @PathVariable(&quot;id&quot;) long id){
+<span class="pc bpc" id="L52" title="3 of 6 branches missed.">        if (list == null || isNullOrEmpty(list.getTitle()) || !repo.existsById(id))</span>
+<span class="nc" id="L53">            return ResponseEntity.badRequest().build();</span>
+
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">        commons.List listToChange = repo.findById(id).isPresent() ? repo.findById(id).get() : null;</span>
+
+<span class="fc" id="L57">        listToChange.setTitle(list.getTitle());</span>
+<span class="fc" id="L58">        listToChange.setCards(list.getCards());</span>
+<span class="fc" id="L59">        repo.save(listToChange);</span>
+
+<span class="fc" id="L61">        return ResponseEntity.ok(listToChange);</span>
+    }
+
+    private static boolean isNullOrEmpty(String s) {
+<span class="pc bpc" id="L65" title="2 of 4 branches missed.">        return s == null || s.isEmpty();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FrontEndUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">client</a> &gt; <a href="index.source.html" class="el_package">client.utils</a> &gt; <span class="el_source">FrontEndUtils.java</span></div><h1>FrontEndUtils.java</h1><pre class="source lang-java linenums">package client.utils;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+
+<span class="nc" id="L6">public class FrontEndUtils {</span>
+    public static void errorPopUp (String header, String message) {
+<span class="nc" id="L8">        Alert alert = new Alert(Alert.AlertType.ERROR);</span>
+<span class="nc" id="L9">        alert.setTitle(&quot;ERROR&quot;);</span>
+<span class="nc" id="L10">        alert.setHeaderText(header);</span>
+<span class="nc" id="L11">        alert.setContentText(message);</span>
+<span class="nc" id="L12">        alert.show();</span>
+<span class="nc" id="L13">    }</span>
+
+    public static ButtonType confirmation () {
+<span class="nc" id="L16">        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);</span>
+<span class="nc" id="L17">        alert.setTitle(&quot;deleting&quot;);</span>
+<span class="nc" id="L18">        alert.setHeaderText(&quot;are you sure you want to delete this?&quot;);</span>
+<span class="nc" id="L19">        alert.showAndWait();</span>
+<span class="nc" id="L20">        return alert.getResult();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

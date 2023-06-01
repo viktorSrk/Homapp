@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="server.api.CardControllerTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2023-03-26T13:25:44" hostname="viktor-srk.local" time="0.005">
+  <properties/>
+  <testcase name="addCard()" classname="server.api.CardControllerTest" time="0.002"/>
+  <testcase name="getAllCards()" classname="server.api.CardControllerTest" time="0.001"/>
+  <testcase name="cannotAddNullCard()" classname="server.api.CardControllerTest" time="0.0"/>
+  <testcase name="replaceCard()" classname="server.api.CardControllerTest" time="0.001"/>
+  <testcase name="removeCard()" classname="server.api.CardControllerTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

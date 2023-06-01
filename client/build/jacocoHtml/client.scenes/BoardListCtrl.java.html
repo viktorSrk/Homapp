@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BoardListCtrl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">client</a> &gt; <a href="index.source.html" class="el_package">client.scenes</a> &gt; <span class="el_source">BoardListCtrl.java</span></div><h1>BoardListCtrl.java</h1><pre class="source lang-java linenums">package client.scenes;
+
+import client.utils.FrontEndUtils;
+import client.utils.ServerUtils;
+import com.google.inject.Inject;
+import commons.Board;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+
+public class BoardListCtrl {
+    private final ServerUtils server;
+    private final MainCtrl mainCtrl;
+
+    private ObservableList&lt;Board&gt; listOfBoards;
+
+    @FXML
+    private TableView&lt;Board&gt; boardTable;
+    @FXML
+    private TableColumn&lt;Board, String&gt; colBoard;
+    @FXML
+    private MenuBar menu;
+    @FXML
+    private MenuItem add;
+    @FXML
+    private MenuItem del;
+    @FXML
+    private MenuItem backToServerConnect;
+    @FXML
+    private MenuItem refresh;
+    @FXML
+    private MenuItem info;
+    @FXML
+    private TextField boardSearch;
+
+    @Inject
+<span class="nc" id="L37">    public BoardListCtrl(ServerUtils server, MainCtrl mainCtrl) {</span>
+<span class="nc" id="L38">        this.mainCtrl = mainCtrl;</span>
+<span class="nc" id="L39">        this.server = server;</span>
+
+<span class="nc" id="L41">    }</span>
+
+    //small start for when we implement multiBoards
+    public void refresh() {
+        try {
+<span class="nc" id="L46">            var boards = server.getBoards();</span>
+        }
+<span class="nc" id="L48">        catch (Exception e) {</span>
+<span class="nc" id="L49">        }</span>
+<span class="nc" id="L50">    }</span>
+
+    // since we first do the single-board approach this will do for now
+    public void open() {
+        try {
+<span class="nc" id="L55">            int i = Integer.parseInt(boardSearch.getText());</span>
+<span class="nc" id="L56">            Board board = server.getBoardById(i);</span>
+<span class="nc" id="L57">            mainCtrl.showBoard(board);</span>
+<span class="nc" id="L58">            boardSearch.clear();</span>
+        }
+<span class="nc" id="L60">        catch (Exception e) {</span>
+<span class="nc" id="L61">            FrontEndUtils.errorPopUp(&quot;not found&quot;, e.getMessage());</span>
+<span class="nc" id="L62">        }</span>
+<span class="nc" id="L63">    }</span>
+
+    //goes back to the Server Connect menu
+    public void cancel() {
+<span class="nc" id="L67">        mainCtrl.showServerConnect();</span>
+        //TO DO
+<span class="nc" id="L69">    }</span>
+
+    public void addBoard() {
+<span class="nc" id="L72">        mainCtrl.showAddBoard();</span>
+        //TO DO
+<span class="nc" id="L74">    }</span>
+
+    public void deleteBoard() {
+        //TO DO
+<span class="nc" id="L78">    }</span>
+
+    public void showInfo() {
+        //TO DO
+<span class="nc" id="L82">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

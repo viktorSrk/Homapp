@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CardCtrl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">client</a> &gt; <a href="index.source.html" class="el_package">client.scenes</a> &gt; <span class="el_source">CardCtrl.java</span></div><h1>CardCtrl.java</h1><pre class="source lang-java linenums">package client.scenes;
+
+import client.utils.ServerUtils;
+import com.google.inject.Inject;
+import commons.Card;
+import javafx.fxml.FXML;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.*;
+import javafx.scene.layout.AnchorPane;
+
+public class CardCtrl {
+
+
+    private final ServerUtils server;
+
+    private MainCtrl mainCtrl;
+
+    private Card getCard() {
+<span class="nc" id="L22">        return card;</span>
+    }
+
+    private Card card;
+
+    public static DataFormat getCardDataFormat() {
+<span class="nc" id="L28">        return cardDataFormat;</span>
+    }
+
+<span class="nc" id="L31">    private static final DataFormat cardDataFormat = new DataFormat(&quot;Card&quot;);</span>
+
+    @FXML
+    private TextField titleTextField;
+
+    @FXML
+    private Button openButton;
+
+    @FXML
+    private Button deleteButton;
+
+    @FXML
+    private AnchorPane anchorPane;
+
+    @Inject
+<span class="nc" id="L46">    public CardCtrl(ServerUtils server, MainCtrl mainCtrl) {</span>
+<span class="nc" id="L47">        this.server = server;</span>
+<span class="nc" id="L48">        this.mainCtrl = mainCtrl;</span>
+<span class="nc" id="L49">    }</span>
+
+    public void setMainCtrl(MainCtrl mainCtrl) {
+<span class="nc" id="L52">        this.mainCtrl = mainCtrl;</span>
+<span class="nc" id="L53">    }</span>
+
+    public void setCard(Card card) {
+<span class="nc" id="L56">        this.card = card;</span>
+<span class="nc" id="L57">        showName(card);</span>
+<span class="nc" id="L58">    }</span>
+//TODO: I need to initialise the title with onw form the database (probably in the contstructor)
+
+    public void open(){
+        //open the related card
+<span class="nc" id="L63">        mainCtrl.showEditCard(card);</span>
+<span class="nc" id="L64">    }</span>
+
+    public void setOnDragDetected(MouseEvent event) {
+<span class="nc" id="L67">        System.out.println(&quot;drag detected&quot;);</span>
+
+<span class="nc" id="L69">        WritableImage snapshot = anchorPane.snapshot(new SnapshotParameters(), null);</span>
+
+<span class="nc" id="L71">        Dragboard db = anchorPane.startDragAndDrop(TransferMode.ANY);</span>
+<span class="nc" id="L72">        db.setDragView(snapshot);</span>
+<span class="nc" id="L73">        ClipboardContent content = new ClipboardContent();</span>
+<span class="nc" id="L74">        content.put(cardDataFormat, getCard().getId());</span>
+<span class="nc" id="L75">        db.setContent(content);</span>
+<span class="nc" id="L76">        anchorPane.setStyle(&quot;-fx-border-color: #ff6969&quot;);</span>
+
+<span class="nc" id="L78">        event.consume();</span>
+<span class="nc" id="L79">    }</span>
+
+    public void setOnDragOver(DragEvent event) {
+<span class="nc" id="L82">        event.acceptTransferModes(TransferMode.MOVE);</span>
+<span class="nc" id="L83">        Dragboard db = event.getDragboard();</span>
+<span class="nc" id="L84">        db.setDragViewOffsetX(event.getX());</span>
+<span class="nc" id="L85">        db.setDragViewOffsetY(event.getY());</span>
+<span class="nc" id="L86">        event.consume();</span>
+<span class="nc" id="L87">    }</span>
+
+    public void setOnDragDone(DragEvent event) {
+<span class="nc" id="L90">        System.out.println(&quot;drag done&quot;);</span>
+<span class="nc" id="L91">        anchorPane.setStyle(&quot;-fx-border-color: transparent&quot;);</span>
+<span class="nc" id="L92">        anchorPane.setStyle(&quot;-fx-border-style: solid&quot;);</span>
+<span class="nc" id="L93">        event.consume();</span>
+
+<span class="nc" id="L95">    }</span>
+
+    public void delete() {
+<span class="nc" id="L98">        server.send(&quot;/app/card/delete&quot;, card);</span>
+<span class="nc" id="L99">    }</span>
+
+    public void showName(Card card) {
+<span class="nc" id="L102">        titleTextField.setText(card.getTitle());</span>
+<span class="nc" id="L103">    }</span>
+
+    public void changeTitle(){
+<span class="nc" id="L106">        var text = titleTextField.getText();</span>
+<span class="nc" id="L107">        card.setTitle(text);</span>
+<span class="nc" id="L108">        this.server.replaceCard(card);</span>
+<span class="nc" id="L109">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

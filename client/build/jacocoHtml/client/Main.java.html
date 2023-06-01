@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Main.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">client</a> &gt; <a href="index.source.html" class="el_package">client</a> &gt; <span class="el_source">Main.java</span></div><h1>Main.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2021 Delft University of Technology
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package client;
+
+import client.scenes.*;
+import com.google.inject.Injector;
+import javafx.application.Application;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import static com.google.inject.Guice.createInjector;
+
+<span class="nc" id="L28">public class Main extends Application { //</span>
+
+<span class="nc" id="L30">    private static final Injector INJECTOR = createInjector(new MyModule());</span>
+<span class="nc" id="L31">    private static final MyFXML FXML = new MyFXML(INJECTOR);</span>
+
+    public static void main(String[] args) throws URISyntaxException, IOException {
+<span class="nc" id="L34">        launch();</span>
+<span class="nc" id="L35">    }</span>
+
+    @Override
+    public void start(Stage primaryStage) throws IOException {
+
+<span class="nc" id="L40">        var overview = FXML.load(QuoteOverviewCtrl.class, &quot;client&quot;, &quot;scenes&quot;, &quot;QuoteOverview.fxml&quot;);</span>
+<span class="nc" id="L41">        var add = FXML.load(AddQuoteCtrl.class, &quot;client&quot;, &quot;scenes&quot;, &quot;AddQuote.fxml&quot;);</span>
+<span class="nc" id="L42">        var board = FXML.load(BoardCtrl.class, &quot;client&quot;, &quot;scenes&quot;, &quot;Board.fxml&quot;);</span>
+
+<span class="nc" id="L44">        var serverConnect = FXML.load(ServerConnectCtrl.class,</span>
+                &quot;client&quot;, &quot;scenes&quot;, &quot;ServerConnect.fxml&quot;);
+<span class="nc" id="L46">        var boardList = FXML.load(BoardListCtrl.class, &quot;client&quot;, &quot;scenes&quot;, &quot;BoardList.fxml&quot;);</span>
+<span class="nc" id="L47">        var addBoard = FXML.load(AddBoardCtrl.class,&quot;client&quot;, &quot;scenes&quot;, &quot;AddBoard.fxml&quot; );</span>
+<span class="nc" id="L48">        var addCard = FXML.load(AddCardCtrl.class,&quot;client&quot;, &quot;scenes&quot;, &quot;AddCard.fxml&quot; );</span>
+<span class="nc" id="L49">        var editCard = FXML.load(EditCardCtrl.class, &quot;client&quot;, &quot;scenes&quot;, &quot;EditCard.fxml&quot;);</span>
+<span class="nc" id="L50">        var addList = FXML.load(AddListCtrl.class,&quot;client&quot;, &quot;scenes&quot;, &quot;AddList.fxml&quot; );</span>
+<span class="nc" id="L51">        var card = FXML.load(CardCtrl.class,&quot;client&quot;, &quot;scenes&quot;, &quot;Card.fxml&quot; );</span>
+<span class="nc" id="L52">        var list = FXML.load(ListCtrl.class,&quot;client&quot;, &quot;scenes&quot;, &quot;List.fxml&quot; );</span>
+
+<span class="nc" id="L54">        var mainCtrl = INJECTOR.getInstance(MainCtrl.class);</span>
+<span class="nc" id="L55">        primaryStage.setOnCloseRequest(e -&gt; mainCtrl.stop());</span>
+<span class="nc" id="L56">        mainCtrl.initialize(primaryStage, overview, add, serverConnect,</span>
+                boardList, addBoard, board, addCard, editCard, addList, card, list);
+<span class="nc" id="L58">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

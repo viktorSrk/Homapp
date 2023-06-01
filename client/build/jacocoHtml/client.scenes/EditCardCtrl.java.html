@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EditCardCtrl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">client</a> &gt; <a href="index.source.html" class="el_package">client.scenes</a> &gt; <span class="el_source">EditCardCtrl.java</span></div><h1>EditCardCtrl.java</h1><pre class="source lang-java linenums">package client.scenes;
+
+import client.utils.ServerUtils;
+import com.google.inject.Inject;
+import commons.Card;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
+
+
+public class EditCardCtrl {
+
+    private final ServerUtils server;
+
+    private final MainCtrl mainCtrl;
+
+    @FXML
+    private TextField titleTextField;
+
+    @FXML
+    private TextArea descriptionTextField;
+
+    @FXML
+    private TextField taskTextField;
+
+    @FXML
+    private ListView&lt;String&gt; tasksListView;
+
+    @FXML
+    private Button addTaskButton;
+
+    @FXML
+    private Button addButton;
+
+    @FXML
+    private Button backButton;
+
+<span class="nc" id="L42">    private final ObservableList&lt;String&gt; tasks = FXCollections.observableArrayList();</span>
+
+    private Card selectedCard; //TODO: parse the card that is clicked to selectedCard
+
+
+    @Inject
+<span class="nc" id="L48">    public EditCardCtrl(ServerUtils server, MainCtrl mainCtrl) {</span>
+<span class="nc" id="L49">        this.server = server;</span>
+<span class="nc" id="L50">        this.mainCtrl = mainCtrl;</span>
+<span class="nc" id="L51">        selectedCard = new Card(&quot;&quot;);</span>
+<span class="nc" id="L52">    }</span>
+
+    /**
+     * Sets the values in the scene corresponding to the selected card, that is edited
+     * @param selectedCard is the card that is to be shown in the pop-up
+     */
+    public void setCard(Card selectedCard) {
+<span class="nc bnc" id="L59" title="All 2 branches missed.">        if (selectedCard == null)</span>
+<span class="nc" id="L60">            throw new NullPointerException();</span>
+<span class="nc" id="L61">        this.selectedCard = selectedCard;</span>
+<span class="nc" id="L62">        titleTextField.setText(selectedCard.getTitle());</span>
+<span class="nc" id="L63">        descriptionTextField.setText(selectedCard.getDescription());</span>
+//        for (String e : selectedCard.getTasks()) {
+//            tasks.add(e);
+//        }
+//        tasksListView.setItems(FXCollections.observableList(tasks));
+//TODO: implement tasks for cards, uncomment once implemented
+<span class="nc" id="L69">    }</span>
+
+    /**
+     * goes back to board
+     */
+    public void back() {
+<span class="nc" id="L75">        clearFields();</span>
+<span class="nc" id="L76">        mainCtrl.closeEditCard();</span>
+<span class="nc" id="L77">    }</span>
+
+    /**
+     * clears all the fields in the scene
+     */
+    private void clearFields() {
+<span class="nc" id="L83">        descriptionTextField.clear();</span>
+<span class="nc" id="L84">        titleTextField.clear();</span>
+<span class="nc" id="L85">    }</span>
+
+    /**
+     * adds a task to the list of tasks in the card
+     */
+    @FXML
+    public void addTask() {
+<span class="nc" id="L92">        String task = taskTextField.getText();</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        if(!task.isEmpty()) {</span>
+<span class="nc" id="L94">            tasks.add(task);</span>
+<span class="nc" id="L95">            tasksListView.setItems(FXCollections.observableList(tasks));</span>
+<span class="nc" id="L96">            taskTextField.clear();</span>
+        }
+<span class="nc" id="L98">    }</span>
+
+    /**
+     * confirms the changes that are made to the card
+     */
+    @FXML
+    public void edit() {
+<span class="nc" id="L105">        String name = titleTextField.getText();</span>
+<span class="nc" id="L106">        String description = descriptionTextField.getText();</span>
+<span class="nc" id="L107">        selectedCard.setTitle(name);</span>
+<span class="nc" id="L108">        selectedCard.setDescription(description);</span>
+//        selectedCard.setTasks(tasks); // TODO: uncomment once tasks are implemented
+        // this.server.send(&quot;/app/cards/edit/&quot; + selectedCard.getId(), selectedCard);
+<span class="nc" id="L111">        this.server.replaceCard(selectedCard);</span>
+<span class="nc" id="L112">        clearFields();</span>
+<span class="nc" id="L113">        mainCtrl.closeAddCard();</span>
+<span class="nc" id="L114">    }</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

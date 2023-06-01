@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="commons.ListTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2023-04-11T13:05:14" hostname="viktor-srk.local" time="0.006">
+  <properties/>
+  <testcase name="getNumber_of_cards()" classname="commons.ListTest" time="0.0"/>
+  <testcase name="testAddCard()" classname="commons.ListTest" time="0.0"/>
+  <testcase name="addCard()" classname="commons.ListTest" time="0.0"/>
+  <testcase name="testSwap()" classname="commons.ListTest" time="0.0"/>
+  <testcase name="notEqualsTest()" classname="commons.ListTest" time="0.0"/>
+  <testcase name="cards()" classname="commons.ListTest" time="0.001"/>
+  <testcase name="setId()" classname="commons.ListTest" time="0.0"/>
+  <testcase name="testRemoveCard()" classname="commons.ListTest" time="0.002"/>
+  <testcase name="equalsTest()" classname="commons.ListTest" time="0.0"/>
+  <testcase name="removeCard()" classname="commons.ListTest" time="0.0"/>
+  <testcase name="setTitle()" classname="commons.ListTest" time="0.0"/>
+  <testcase name="getTitle()" classname="commons.ListTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

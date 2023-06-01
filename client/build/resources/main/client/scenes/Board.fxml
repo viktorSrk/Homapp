@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="520.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardCtrl">
+   <children>
+      <HBox prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox prefWidth="200.0" style="-fx-background-color: #F7D0FC;" HBox.hgrow="NEVER">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <children>
+                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#back" text="Back" />
+                  <Text fx:id="boardName" strokeType="OUTSIDE" strokeWidth="0.0" text="Main Board" wrappingWidth="180.0">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Text>
+                  <Text fx:id="boardId" strokeType="OUTSIDE" strokeWidth="0.0" text="#0000" wrappingWidth="180.0">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Text>
+                  <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#delete" text="Delete Board" />
+               </children>
+            </VBox>
+            <ScrollPane fitToHeight="true" fitToWidth="true" hmax="2.0" pannable="true" prefHeight="621.0" prefWidth="1050.0" styleClass="edge-to-edge" vbarPolicy="NEVER" vmax="0.0" HBox.hgrow="ALWAYS">
+              <content>
+                  <HBox fx:id="listsHBox" maxWidth="1.7976931348623157E308" spacing="30.0">
+                     <children>
+                        <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addListButton" text="Add List">
+                           <HBox.margin>
+                              <Insets bottom="70.0" left="50.0" right="50.0" top="70.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </HBox>
+              </content>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <padding>
+                  <Insets bottom="30.0" />
+               </padding>
+            </ScrollPane>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>List.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">commons</a> &gt; <a href="index.source.html" class="el_package">commons</a> &gt; <span class="el_source">List.java</span></div><h1>List.java</h1><pre class="source lang-java linenums">package commons;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+
+import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
+
+@Entity
+public class List {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String title;
+
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name= &quot;board_id&quot;, referencedColumnName = &quot;id&quot;)
+    private Board board;
+
+<span class="fc" id="L26">    @OneToMany(mappedBy = &quot;list&quot;, orphanRemoval = true)</span>
+    @OrderBy(value = &quot;position&quot;)
+    private java.util.List&lt;Card&gt; cards = new ArrayList&lt;&gt;();
+    private int numberOfCards;
+
+    /**
+     * Creates a new List. List for cards is initialized and number_of_cards set to 0
+     * @param title the title of the new List
+     */
+<span class="fc" id="L35">    public List(String title) {</span>
+<span class="fc" id="L36">        this.title = title;</span>
+<span class="fc" id="L37">        this.numberOfCards = 0;</span>
+<span class="fc" id="L38">    }</span>
+
+    /**
+     * No argument constructor of a List. Sets title to &quot;New List&quot;.
+     */
+<span class="fc" id="L43">    public List() {</span>
+<span class="fc" id="L44">        this.title = &quot;New List&quot;;</span>
+<span class="fc" id="L45">        this.cards = new ArrayList&lt;Card&gt;();</span>
+<span class="fc" id="L46">        this.numberOfCards = 0;</span>
+<span class="fc" id="L47">    }</span>
+
+    public Board getBoard() {
+<span class="nc" id="L50">        return board;</span>
+    }
+
+    public void setBoard(Board board) {
+<span class="nc" id="L54">        this.board = board;</span>
+<span class="nc" id="L55">    }</span>
+
+    /**
+     * Sets the List ID
+     * @param id the new id for this list
+     */
+    public void setId(Long id) {
+<span class="fc" id="L62">        this.id = id;</span>
+<span class="fc" id="L63">    }</span>
+
+    /**
+     * Gets the ID of the List
+     * @return the ID of this list
+     */
+    public Long getId() {
+<span class="fc" id="L70">        return id;</span>
+    }
+
+    /**
+     * Gets the Title of this List
+     * @return the title of this list
+     */
+    public String getTitle() {
+<span class="fc" id="L78">        return title;</span>
+    }
+
+    /**
+     * Sets the title of this list
+     * @param title the new title
+     */
+    public void setTitle(String title) {
+<span class="fc" id="L86">        this.title = title;</span>
+<span class="fc" id="L87">    }</span>
+
+    /**
+     * Gets the ArrayList of cards of this List
+     * @return the ArrayList of cards of this list
+     */
+    public java.util.List&lt;Card&gt; getCards() {
+<span class="fc" id="L94">        return cards;</span>
+    }
+
+    /**
+     * Sets the ArrayList of Cards to a new List. number_of_cards gets updated too
+     * @param cards the new ArrayList of cards
+     */
+    public void setCards(java.util.List&lt;Card&gt; cards) {
+<span class="fc" id="L102">        this.cards = cards;</span>
+<span class="fc" id="L103">        this.numberOfCards = cards.size();</span>
+<span class="fc" id="L104">    }</span>
+
+    /**
+     * Gets the amount of cards of this List
+     * @return the amount of cards of this list
+     */
+    public int getNumberOfCards() {
+<span class="fc" id="L111">        return numberOfCards;</span>
+    }
+
+    /**
+     * Adds one card to the end of the list
+     * @param card the card to be added
+     */
+    public void addCard(Card card) {
+<span class="fc" id="L119">        this.cards.add(card);</span>
+<span class="fc" id="L120">        this.numberOfCards++;</span>
+<span class="fc" id="L121">    }</span>
+
+    /**
+     * Adds one card to the list at a specific position
+     * @param card the card that is to be added to the list
+     * @param index the index where the card is to be inserted in
+     */
+    public void addCard(Card card, int index) {
+<span class="fc bfc" id="L129" title="All 2 branches covered.">        if (index &lt;= 0) {</span>
+<span class="fc" id="L130">            card.setPosition(0);</span>
+<span class="fc" id="L131">            this.cards.add(0, card);</span>
+<span class="fc" id="L132">            this.numberOfCards++;</span>
+<span class="fc" id="L133">            return;</span>
+        }
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">        if (index &gt; cards.size() - 1) {</span>
+<span class="nc" id="L136">            card.setPosition(cards.size()-1);</span>
+<span class="nc" id="L137">            this.cards.add(cards.size() - 1, card);</span>
+<span class="nc" id="L138">            this.numberOfCards++;</span>
+<span class="nc" id="L139">            return;</span>
+        }
+<span class="fc" id="L141">        card.setPosition(index);</span>
+<span class="fc" id="L142">        this.cards.add(index, card);</span>
+<span class="fc" id="L143">        this.numberOfCards++;</span>
+<span class="fc" id="L144">    }</span>
+
+    /**
+     * Removes the specified card from the list. number_of_cards also gets decreased
+     * @param card the card that is to be removed
+     */
+    public void removeCard(Card card) {
+<span class="fc" id="L151">        this.cards.remove(card);</span>
+<span class="fc" id="L152">        this.numberOfCards--;</span>
+<span class="fc" id="L153">    }</span>
+
+    /**
+     * Removes the card at the specified index
+     * @param index the index from the card that is to be removed
+     * @return the removed card
+     * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt; size())
+     */
+    public Card removeCard(int index) throws IndexOutOfBoundsException {
+<span class="fc bfc" id="L162" title="All 2 branches covered.">        if (index &gt;= this.cards.size()) {</span>
+<span class="fc" id="L163">            throw new IndexOutOfBoundsException();</span>
+        } else {
+<span class="fc" id="L165">            this.numberOfCards--;</span>
+<span class="fc" id="L166">            return this.cards.remove(index);</span>
+        }
+    }
+
+    public Card getCardById(long idCard) {
+<span class="fc" id="L171">        var card = cards.stream()</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">                .filter(x -&gt; x.getId() == idCard)</span>
+<span class="fc" id="L173">                .toArray()[0];</span>
+<span class="fc" id="L174">        return (Card) card;</span>
+    }
+
+    public void move(long idCard, int index) throws NullPointerException{
+<span class="fc" id="L178">        Card temp = getCardById(idCard);</span>
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">        if (temp == null) {</span>
+<span class="nc" id="L180">            throw new NullPointerException();</span>
+        }
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">        if (index &gt;= cards.size() - 1) {</span>
+<span class="fc" id="L183">            removeCard(temp);</span>
+<span class="fc" id="L184">            addCard(temp);</span>
+<span class="fc" id="L185">            return;</span>
+        }
+<span class="nc" id="L187">        removeCard(temp);</span>
+<span class="nc" id="L188">        addCard(temp, index);</span>
+
+<span class="nc" id="L190">    }</span>
+
+    public void insert(int index) {
+<span class="nc" id="L193">        Card c = cards.get(cards.size()-1);</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">        if (index &gt; cards.size() - 1) {</span>
+<span class="nc" id="L195">            c.setPosition(cards.size() - 1);</span>
+<span class="nc" id="L196">            return;</span>
+        }
+<span class="nc" id="L198">        cards.remove(cards.size()-1);</span>
+<span class="nc" id="L199">        cards.add(index, c);</span>
+<span class="nc" id="L200">        c.setPosition(index);</span>
+//        cards.remove(cards.size());
+
+<span class="nc" id="L203">    }</span>
+
+    @Override
+    public boolean equals(Object o) {
+<span class="fc bfc" id="L207" title="All 2 branches covered.">        if (this == o) return true;</span>
+
+<span class="pc bpc" id="L209" title="2 of 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+
+<span class="fc" id="L211">        List list = (List) o;</span>
+
+<span class="fc" id="L213">        return new EqualsBuilder().append(numberOfCards, list.numberOfCards)</span>
+<span class="fc" id="L214">                .append(id, list.id)</span>
+<span class="fc" id="L215">                .append(title, list.title)</span>
+<span class="fc" id="L216">                .append(cards, list.cards)</span>
+<span class="fc" id="L217">                .append(board, list.board)</span>
+<span class="fc" id="L218">                .isEquals();</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L223">        return new HashCodeBuilder(17, 37)</span>
+<span class="fc" id="L224">                .append(id).append(title)</span>
+<span class="fc" id="L225">                .append(cards)</span>
+<span class="fc" id="L226">                .append(numberOfCards)</span>
+<span class="fc" id="L227">                .toHashCode();</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L232">        return new ToStringBuilder(this, MULTI_LINE_STYLE)</span>
+<span class="fc" id="L233">                .append(&quot;id&quot;, id)</span>
+<span class="fc" id="L234">                .append(&quot;title&quot;, title)</span>
+<span class="fc" id="L235">                .append(&quot;cards&quot;, cards)</span>
+<span class="fc" id="L236">                .append(&quot;number_of_cards&quot;, numberOfCards)</span>
+<span class="fc" id="L237">                .toString();</span>
+    }
+
+    public void reOrder() {
+<span class="nc bnc" id="L241" title="All 2 branches missed.">        if (getCards().size() == 0) return;</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">        for (Card c : getCards()) {</span>
+<span class="nc" id="L243">            c.setPosition(getCards().indexOf(c));</span>
+<span class="nc" id="L244">        }</span>
+<span class="nc" id="L245">        numberOfCards = cards.size();</span>
+<span class="nc" id="L246">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

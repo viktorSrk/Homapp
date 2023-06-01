@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ListCtrl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">client</a> &gt; <a href="index.source.html" class="el_package">client.scenes</a> &gt; <span class="el_source">ListCtrl.java</span></div><h1>ListCtrl.java</h1><pre class="source lang-java linenums">package client.scenes;
+
+import client.MyFXML;
+import client.MyModule;
+import client.utils.ServerUtils;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import commons.Card;
+import commons.List;
+import commons.MoveCardMessage;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.input.DataFormat;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+
+import static com.google.inject.Guice.createInjector;
+
+public class ListCtrl {
+
+    private final ServerUtils server;
+
+    private MainCtrl mainCtrl;
+
+<span class="nc" id="L29">    private static final DataFormat cardDataFormat = CardCtrl.getCardDataFormat();</span>
+
+    @FXML
+    private TextField titleTextField;
+
+    @FXML
+    private Button addCardButton;
+
+    @FXML
+    private Button deleteCardButton;
+
+    @FXML
+    private VBox cardsVBox;
+
+    @FXML
+    private AnchorPane frame;
+
+    private commons.List cardList;
+
+    public AnchorPane getFrame() {
+<span class="nc" id="L49">        return frame;</span>
+    }
+
+    @Inject
+<span class="nc" id="L53">    public ListCtrl(ServerUtils server, MainCtrl mainCtrl) {</span>
+<span class="nc" id="L54">        this.server = server;</span>
+<span class="nc" id="L55">        this.mainCtrl = mainCtrl;</span>
+<span class="nc" id="L56">    }</span>
+
+    public void setMainCtrl(MainCtrl mainCtrl) {
+<span class="nc" id="L59">        this.mainCtrl = mainCtrl;</span>
+<span class="nc" id="L60">    }</span>
+
+    public void setCardList(List cardList) {
+<span class="nc" id="L63">        this.cardList = cardList;</span>
+<span class="nc" id="L64">    }</span>
+
+    public void showName() {
+<span class="nc" id="L67">        titleTextField.setText(cardList.getTitle());</span>
+<span class="nc" id="L68">    }</span>
+
+    public void loadCards() {
+<span class="nc" id="L71">        var cards = cardList.getCards();</span>
+<span class="nc" id="L72">        var cardsVBoxChildren = cardsVBox.getChildren();</span>
+<span class="nc" id="L73">        cardsVBoxChildren.remove(0, cardsVBoxChildren.size());</span>
+
+<span class="nc" id="L75">        Injector injector = createInjector(new MyModule());</span>
+<span class="nc" id="L76">        MyFXML fxml = new MyFXML(injector);</span>
+
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        for (var card : cards) {</span>
+<span class="nc" id="L79">            var loadedPair = fxml.load(CardCtrl.class, &quot;client&quot;, &quot;scenes&quot;, &quot;Card.fxml&quot;);</span>
+<span class="nc" id="L80">            loadedPair.getKey().setMainCtrl(mainCtrl);</span>
+<span class="nc" id="L81">            loadedPair.getKey().setCard(card);</span>
+<span class="nc" id="L82">            loadedPair.getKey().showName(card);</span>
+<span class="nc" id="L83">            cardsVBoxChildren.add(loadedPair.getValue());</span>
+<span class="nc" id="L84">        }</span>
+<span class="nc" id="L85">    }</span>
+
+    public void setOnDragOver(DragEvent event) {
+<span class="nc" id="L88">        System.out.println(&quot;drag over&quot;);</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">        if (event.getGestureSource() != cardsVBox.getChildren()</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">                &amp;&amp; event.getDragboard().hasContent(cardDataFormat)) {</span>
+<span class="nc" id="L91">            event.acceptTransferModes(TransferMode.COPY_OR_MOVE);</span>
+        }
+<span class="nc" id="L93">        event.consume();</span>
+<span class="nc" id="L94">    }</span>
+
+    public void setOnDragEntered(DragEvent event) {
+<span class="nc" id="L97">        System.out.println(&quot;drag entered&quot;);</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">        if (event.getGestureSource() != cardsVBox.getChildren() &amp;&amp;</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">                event.getDragboard().hasContent(cardDataFormat)) {</span>
+<span class="nc" id="L100">            cardsVBox.setStyle(&quot;-fx-border-color: #33c5ff&quot;);</span>
+        }
+<span class="nc" id="L102">        event.consume();</span>
+<span class="nc" id="L103">    }</span>
+
+    public void setOnDragExited(DragEvent event) {
+<span class="nc" id="L106">        System.out.println(&quot;drag exited&quot;);</span>
+<span class="nc" id="L107">        cardsVBox.setStyle(&quot;-fx-border-color: transparent&quot;);</span>
+<span class="nc" id="L108">        event.consume();</span>
+<span class="nc" id="L109">    }</span>
+
+    public void setOnDragDropped(DragEvent event) {
+<span class="nc" id="L112">        System.out.println(&quot;drag dropped: &quot; + event.getSceneY() + &quot;, &quot; + event.getSceneX());</span>
+<span class="nc" id="L113">        Dragboard db = event.getDragboard();</span>
+<span class="nc" id="L114">        boolean success = false;</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">        if (db.hasContent(cardDataFormat)) {</span>
+            //113.0 is the size of the card's anchorpane, supposedly
+<span class="nc" id="L117">            int index = (int) (((event.getSceneY() - 125.0)/110.0));</span>
+<span class="nc" id="L118">            long id = (long) db.getContent(cardDataFormat);</span>
+<span class="nc" id="L119">            var list2 = (commons.List) server.getLists().stream()</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">                    .filter(x -&gt; ListCtrl.findListWithCardHelper(x, id) != null)</span>
+<span class="nc" id="L121">                    .toArray()[0];</span>
+<span class="nc" id="L122">            Card c = list2.getCardById(id);</span>
+<span class="nc" id="L123">            long listIdSource = list2.getId();</span>
+<span class="nc" id="L124">            long listIdTarget = this.getCardList().getId();</span>
+<span class="nc" id="L125">            MoveCardMessage message = new MoveCardMessage(listIdSource, listIdTarget, index, c);</span>
+
+<span class="nc" id="L127">            server.send(&quot;/app/cards/move&quot;, message);</span>
+
+<span class="nc" id="L129">            success = true;</span>
+        }
+<span class="nc" id="L131">        event.setDropCompleted(success);</span>
+<span class="nc" id="L132">        event.consume();</span>
+<span class="nc" id="L133">    }</span>
+
+    public static commons.Card findListWithCardHelper(List list, long idCard) {
+        try {
+<span class="nc" id="L137">            return list.getCardById(idCard);</span>
+<span class="nc" id="L138">        } catch (ArrayIndexOutOfBoundsException e) {</span>
+<span class="nc" id="L139">            return null;</span>
+        }
+    }
+
+    private commons.List getCardList() {
+<span class="nc" id="L144">        return cardList;</span>
+    }
+
+    public void delete() {
+<span class="nc" id="L148">        server.send(&quot;/app/list/delete&quot;, cardList);</span>
+<span class="nc" id="L149">    }</span>
+
+    public void changeTitle(){
+<span class="nc" id="L152">        var text = titleTextField.getText();</span>
+<span class="nc" id="L153">        cardList.setTitle(text);</span>
+<span class="nc" id="L154">        server.send(&quot;/app/list/replace&quot;,cardList);</span>
+<span class="nc" id="L155">    }</span>
+    public void addCard() {
+<span class="nc" id="L157">        mainCtrl.showAddCard(cardList);</span>
+<span class="nc" id="L158">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

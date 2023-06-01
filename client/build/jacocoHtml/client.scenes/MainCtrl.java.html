@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MainCtrl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">client</a> &gt; <a href="index.source.html" class="el_package">client.scenes</a> &gt; <span class="el_source">MainCtrl.java</span></div><h1>MainCtrl.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2021 Delft University of Technology
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package client.scenes;
+
+import commons.Board;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.util.Pair;
+
+<span class="fc" id="L24">public class MainCtrl {</span>
+
+    private Stage primaryStage;
+
+    private Stage secondStage;
+
+    private QuoteOverviewCtrl overviewCtrl;
+    private Scene overview;
+
+    private AddQuoteCtrl addCtrl;
+    private Scene add;
+
+    private ServerConnectCtrl serverConnectCtrl;
+    private Scene serverConnect;
+
+    private BoardListCtrl boardListCtrl;
+    private Scene boardList;
+
+    private AddBoardCtrl addBoardCtrl;
+
+    private Scene addBoard;
+
+    private BoardCtrl boardCtrl;
+    private Scene board;
+
+    private AddCardCtrl addCardCtrl;
+    private Scene addCard;
+
+    private EditCardCtrl editCardCtrl;
+    private Scene editCard;
+
+    private CardCtrl cardCtrl;
+    private Scene card;
+
+    private AddListCtrl addListCtrl;
+    private Scene addList;
+
+    private ListCtrl listCtrl;
+    private Scene list;
+
+    public void initialize(Stage primaryStage, Pair&lt;QuoteOverviewCtrl, Parent&gt; overview,
+                           Pair&lt;AddQuoteCtrl, Parent&gt; add,
+                           Pair&lt;ServerConnectCtrl, Parent&gt; serverConnect,
+                           Pair&lt;BoardListCtrl, Parent&gt; boardList,
+                           Pair&lt;AddBoardCtrl, Parent&gt; addBoard,
+                           Pair&lt;BoardCtrl, Parent&gt; board,
+                           Pair&lt;AddCardCtrl, Parent&gt; addCard,
+                           Pair&lt;EditCardCtrl, Parent&gt; editCard,
+                           Pair&lt;AddListCtrl, Parent&gt; addList,
+                           Pair&lt;CardCtrl, Parent&gt; card,
+                           Pair&lt;ListCtrl, Parent&gt; list
+    ) {
+<span class="nc" id="L76">        this.primaryStage = primaryStage;</span>
+<span class="nc" id="L77">        this.serverConnectCtrl = serverConnect.getKey();</span>
+<span class="nc" id="L78">        this.serverConnect = new Scene(serverConnect.getValue());</span>
+
+<span class="nc" id="L80">        this.boardListCtrl = boardList.getKey();</span>
+<span class="nc" id="L81">        this.boardList = new Scene(boardList.getValue());</span>
+
+<span class="nc" id="L83">        this.addBoardCtrl = addBoard.getKey();</span>
+<span class="nc" id="L84">        this.addBoard = new Scene(addBoard.getValue());</span>
+
+<span class="nc" id="L86">        this.overviewCtrl = overview.getKey();</span>
+<span class="nc" id="L87">        this.overview = new Scene(overview.getValue());</span>
+
+<span class="nc" id="L89">        this.addCtrl = add.getKey();</span>
+<span class="nc" id="L90">        this.add = new Scene(add.getValue());</span>
+
+<span class="nc" id="L92">        this.boardCtrl = board.getKey();</span>
+<span class="nc" id="L93">        this.board = new Scene(board.getValue());</span>
+
+<span class="nc" id="L95">        this.addCardCtrl = addCard.getKey();</span>
+<span class="nc" id="L96">        this.addCard = new Scene(addCard.getValue());</span>
+
+<span class="nc" id="L98">        this.editCardCtrl = editCard.getKey();</span>
+<span class="nc" id="L99">        this.editCard = new Scene(editCard.getValue());</span>
+
+<span class="nc" id="L101">        this.cardCtrl = card.getKey();</span>
+<span class="nc" id="L102">        this.card = new Scene(card.getValue());</span>
+
+<span class="nc" id="L104">        this.addListCtrl = addList.getKey();</span>
+<span class="nc" id="L105">        this.addList = new Scene(addList.getValue());</span>
+
+<span class="nc" id="L107">        this.listCtrl = list.getKey();</span>
+<span class="nc" id="L108">        this.list = new Scene(list.getValue());</span>
+
+<span class="nc" id="L110">        this.secondStage = new Stage();</span>
+
+<span class="nc" id="L112">        showServerConnect();</span>
+<span class="nc" id="L113">        primaryStage.show();</span>
+<span class="nc" id="L114">    }</span>
+
+    public void showOverview() {
+<span class="nc" id="L117">        primaryStage.setTitle(&quot;Quotes: Overview&quot;);</span>
+<span class="nc" id="L118">        primaryStage.setScene(overview);</span>
+<span class="nc" id="L119">        overviewCtrl.refresh();</span>
+<span class="nc" id="L120">    }</span>
+
+    public void showAdd() {
+<span class="nc" id="L123">        primaryStage.setTitle(&quot;Quotes: Adding Quote&quot;);</span>
+<span class="nc" id="L124">        primaryStage.setScene(add);</span>
+<span class="nc" id="L125">        add.setOnKeyPressed(e -&gt; addCtrl.keyPressed(e));</span>
+<span class="nc" id="L126">    }</span>
+
+    public void showServerConnect() {
+<span class="nc" id="L129">        primaryStage.setTitle(&quot;Talio: Connect to a Server&quot;);</span>
+<span class="nc" id="L130">        primaryStage.setScene(serverConnect);</span>
+<span class="nc" id="L131">    }</span>
+
+    public void showBoardList() {
+<span class="nc" id="L134">        primaryStage.setTitle(&quot;Talio: Boards&quot;);</span>
+<span class="nc" id="L135">        primaryStage.setScene(boardList);</span>
+<span class="nc" id="L136">    }</span>
+
+    public void showAddBoard() {
+<span class="nc" id="L139">        secondStage.setTitle(&quot;Talio: Add a Board&quot;);</span>
+<span class="nc" id="L140">        secondStage.setScene(addBoard);</span>
+<span class="nc" id="L141">        secondStage.show();</span>
+<span class="nc" id="L142">    }</span>
+
+    public void closeAddBoard() {
+<span class="nc" id="L145">        secondStage.close();</span>
+<span class="nc" id="L146">    }</span>
+
+    public void showBoard(Board boardObject) {
+<span class="nc" id="L149">        primaryStage.setTitle(&quot;Talio: Board&quot;);</span>
+<span class="nc" id="L150">        primaryStage.setScene(board);</span>
+<span class="nc" id="L151">        boardCtrl.setBoard(boardObject);</span>
+<span class="nc" id="L152">        boardCtrl.loadLists();</span>
+<span class="nc" id="L153">    }</span>
+
+    public void showAddCard(commons.List list) {
+<span class="nc" id="L156">        secondStage.setTitle(&quot;Talio: addCard&quot;);</span>
+<span class="nc" id="L157">        secondStage.setScene(addCard);</span>
+<span class="nc" id="L158">        addCardCtrl.setList(list);</span>
+<span class="nc" id="L159">        secondStage.show();</span>
+<span class="nc" id="L160">    }</span>
+    public void closeAddCard() {
+<span class="nc" id="L162">        secondStage.close();</span>
+<span class="nc" id="L163">    }</span>
+
+    public void showCard() {
+<span class="nc" id="L166">        primaryStage.setTitle(&quot;Talio: Card&quot;);</span>
+<span class="nc" id="L167">        primaryStage.setScene(card);</span>
+<span class="nc" id="L168">    }</span>
+
+    public void showEditCard(commons.Card card) {
+<span class="nc" id="L171">        secondStage.setTitle(&quot;Talio: Edit Card&quot;);</span>
+<span class="nc" id="L172">        secondStage.setScene(editCard);</span>
+<span class="nc" id="L173">        editCardCtrl.setCard(card);</span>
+<span class="nc" id="L174">        secondStage.show();</span>
+<span class="nc" id="L175">    }</span>
+
+    public void closeEditCard() {
+<span class="nc" id="L178">        secondStage.close();</span>
+<span class="nc" id="L179">    }</span>
+
+    public void showAddList(Board board) {
+<span class="nc" id="L182">        secondStage.setTitle(&quot;Talio: AddList&quot;);</span>
+<span class="nc" id="L183">        secondStage.setScene(addList);</span>
+<span class="nc" id="L184">        secondStage.show();</span>
+<span class="nc" id="L185">        addListCtrl.setBoard(board);</span>
+<span class="nc" id="L186">    }</span>
+
+    public void closeAddList(){
+<span class="nc" id="L189">        secondStage.close();</span>
+<span class="nc" id="L190">    }</span>
+
+    public void showList() {
+<span class="nc" id="L193">        primaryStage.setTitle(&quot;Talio: List&quot;);</span>
+<span class="nc" id="L194">        primaryStage.setScene(list);</span>
+<span class="nc" id="L195">    }</span>
+
+    public void setWebsocketSessions() {
+<span class="nc" id="L198">        boardCtrl.setWebsocketSessions();</span>
+<span class="nc" id="L199">    }</span>
+
+    public void registerBoard(){
+<span class="nc" id="L202">        boardCtrl.register();</span>
+<span class="nc" id="L203">    }</span>
+
+    public void  stop(){
+<span class="nc" id="L206">        boardCtrl.stop();</span>
+<span class="nc" id="L207">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
