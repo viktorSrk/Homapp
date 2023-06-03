@@ -12,3 +12,7 @@ server/build/* linguist-vendored
 server/build/jacocoHtml/* linguist-vendored
 server/build/jacocoHtml/server/* linguist-vendored
 server/build/jacocoHtml/server.api/* linguist-vendored
+
+*.html -linguist-detectable
+*.css -linguist-detectable
+*.js -linguist-detectable
