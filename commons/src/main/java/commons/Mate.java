@@ -1,13 +1,11 @@
 package commons;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Mate {
@@ -17,6 +15,10 @@ public class Mate {
     private String name;
     private String lastname;
     private boolean hj;
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "house_id", referencedColumnName = "id")
+    private House house;
 
     public Mate() {
         name = "";
@@ -30,20 +32,44 @@ public class Mate {
         this.hj = hj;
     }
 
+    public House getHouse() {
+        return house;
+    }
+
+    public void setHouse(House house) {
+        this.house = house;
+    }
+
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getLastname() {
         return lastname;
     }
 
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
     public boolean isHj() {
         return hj;
+    }
+
+    public void setHj(boolean hj) {
+        this.hj = hj;
     }
 
     @Override
@@ -56,6 +82,7 @@ public class Mate {
                 .append(hj, mate.hj)
                 .append(name, mate.name)
                 .append(lastname, mate.lastname)
+                .append(house, mate.house)
                 .isEquals();
     }
 
@@ -66,6 +93,7 @@ public class Mate {
                 .append(name)
                 .append(lastname)
                 .append(hj)
+                .append(house)
                 .toHashCode();
     }
 
@@ -76,6 +104,7 @@ public class Mate {
                 .append("name", name)
                 .append("lastname", lastname)
                 .append("hj", hj)
+                .append("house", house)
                 .toString();
     }
 }

@@ -30,6 +30,10 @@ public class House {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public java.util.List<Mate> getMates() {
         return mates;
     }
