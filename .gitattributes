@@ -1,8 +1,14 @@
+client/build/* linguist-vendored
 client/build/jacocoHtml/* linguist-vendored
 client/build/jacocoHtml/client.scenes/* linguist-vendored
 client/build/jacocoHtml/client.utils/* linguist-vendored
 client/build/jacocoHtml/client/* linguist-vendored
 
 commons/build/* linguist-vendored
+commons/build/jacocoHtml/* linguist-vendored
+commons/build/jacocoHtml/commons/* linguist-vendored
 
 server/build/* linguist-vendored
+server/build/jacocoHtml/* linguist-vendored
+server/build/jacocoHtml/server/* linguist-vendored
+server/build/jacocoHtml/server.api/* linguist-vendored
