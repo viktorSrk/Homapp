@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>House.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">commons</a> &gt; <a href="index.source.html" class="el_package">commons</a> &gt; <span class="el_source">House.java</span></div><h1>House.java</h1><pre class="source lang-java linenums">package commons;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+public class House {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @OneToMany(mappedBy = &quot;house&quot;, orphanRemoval = true)
+    private final List&lt;Mate&gt; mates;
+    private int size;
+
+<span class="nc" id="L20">    public House() {</span>
+<span class="nc" id="L21">        size = 10;</span>
+<span class="nc" id="L22">        mates = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L23" title="All 2 branches missed.">        for (int i = 0; i &lt; size; i++) {</span>
+<span class="nc" id="L24">            mates.add(null);</span>
+        }
+<span class="nc" id="L26">    }</span>
+
+<span class="nc" id="L28">    public House(int houseSize) {</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">        if (houseSize &lt;= 0)</span>
+<span class="nc" id="L30">            throw new IllegalArgumentException(&quot;House size cannot cannot be 0 or smaller&quot;);</span>
+<span class="nc" id="L31">        size = houseSize;</span>
+<span class="nc" id="L32">        mates = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">        for (int i = 0; i &lt; size; i++) {</span>
+<span class="nc" id="L34">            mates.add(null);</span>
+        }
+<span class="nc" id="L36">    }</span>
+
+    public long getId() {
+<span class="nc" id="L39">        return id;</span>
+    }
+
+    public void setId(long id) {
+<span class="nc" id="L43">        this.id = id;</span>
+<span class="nc" id="L44">    }</span>
+
+    public List&lt;Mate&gt; getMates() {
+<span class="nc" id="L47">        return mates;</span>
+    }
+
+    public int getSize() {
+<span class="nc" id="L51">        return size;</span>
+    }
+
+    public void setSize(int size) {
+<span class="nc bnc" id="L55" title="All 2 branches missed.">        if (size &lt;= 0)</span>
+<span class="nc" id="L56">            throw new IllegalArgumentException(&quot;House size cannot cannot be 0 or smaller&quot;);</span>
+<span class="nc" id="L57">        int diff = this.size - size;</span>
+<span class="nc" id="L58">        this.size = size;</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">        if (diff &gt; 0) {</span>
+<span class="nc" id="L60">            this.mates.subList(this.size, this.size + diff).clear();</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        } else if (diff &lt; 0) {</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">            for (int i = this.size + diff; i &lt; this.size; i++) {</span>
+<span class="nc" id="L63">                this.mates.add(i, null);</span>
+            }
+        }
+<span class="nc" id="L66">    }</span>
+
+    /**
+     * Change a Mate of a specific room
+     * @param room room number which has a change in it
+     * @param mate the new Mate that replaces the old
+     */
+    public void changeMate(int room, Mate mate) {
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        if (room &gt; size) throw new IndexOutOfBoundsException(&quot;Room number is too big for the size of the House&quot;);</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">        if (room &lt;= 0) throw new IndexOutOfBoundsException(&quot;There is no room number 0 or lower&quot;);</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (mates.get(room - 1) != null)</span>
+<span class="nc" id="L77">            mates.get(room - 1).setHouse(null);</span>
+<span class="nc" id="L78">        mates.set(room - 1, mate);</span>
+<span class="nc" id="L79">        mate.setHouse(this);</span>
+<span class="nc" id="L80">    }</span>
+
+    /**
+     * Gets a Mate from a certain room number
+     * @param room the room which's mate you want
+     * @return the Mate from the certain room
+     */
+    public Mate findMateByRoom(int room) {
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        if (room &gt; size) throw new IndexOutOfBoundsException(&quot;Room number is too big for the size of the House&quot;);</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">        if (room &lt;= 0) throw new IndexOutOfBoundsException(&quot;There is no room number 0 or lower&quot;);</span>
+<span class="nc" id="L90">        return mates.get(room - 1);</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L95" title="All 2 branches missed.">        if (this == obj) return true;</span>
+<span class="nc bnc" id="L96" title="All 4 branches missed.">        if (obj == null || getClass() != obj.getClass()) return false;</span>
+<span class="nc" id="L97">        House house = (House) obj;</span>
+
+<span class="nc" id="L99">        return new EqualsBuilder().append(id, house.id)</span>
+<span class="nc" id="L100">                .append(mates, house.mates)</span>
+<span class="nc" id="L101">                .append(size, house.size)</span>
+<span class="nc" id="L102">                .isEquals();</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L107">        return new HashCodeBuilder(17, 37)</span>
+<span class="nc" id="L108">                .append(id)</span>
+<span class="nc" id="L109">                .append(mates)</span>
+<span class="nc" id="L110">                .append(size)</span>
+<span class="nc" id="L111">                .toHashCode();</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L116">        return new ToStringBuilder(this)</span>
+<span class="nc" id="L117">                .append(&quot;Id&quot;, id)</span>
+<span class="nc" id="L118">                .append(&quot;Mates&quot;, mates)</span>
+<span class="nc" id="L119">                .append(&quot;Size&quot;, size)</span>
+<span class="nc" id="L120">                .toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

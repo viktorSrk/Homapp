@@ -15,11 +15,7 @@
  */
 package client.scenes;
 
-import commons.Board;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
 public class MainCtrl {
 
@@ -27,180 +23,14 @@ public class MainCtrl {
 
     private Stage secondStage;
 
-    private ServerConnectCtrl serverConnectCtrl;
-    private Scene serverConnect;
-
-    private BoardListCtrl boardListCtrl;
-    private Scene boardList;
-
-    private AddBoardCtrl addBoardCtrl;
-    private Scene addBoard;
-
-    private BoardCtrl boardCtrl;
-    private Scene board;
-
-    private AddCardCtrl addCardCtrl;
-    private Scene addCard;
-
-    private EditCardCtrl editCardCtrl;
-    private Scene editCard;
-
-    private CardCtrl cardCtrl;
-    private Scene card;
-
-    private AddListCtrl addListCtrl;
-    private Scene addList;
-
-    private ListCtrl listCtrl;
-    private Scene list;
-
-    private AdminPasswordCtrl adminPasswordCtrl;
-    private Scene adminPassword;
-
-    public void initialize(Stage primaryStage,
-                           Pair<ServerConnectCtrl, Parent> serverConnect,
-                           Pair<BoardListCtrl, Parent> boardList,
-                           Pair<AddBoardCtrl, Parent> addBoard,
-                           Pair<BoardCtrl, Parent> board,
-                           Pair<AddCardCtrl, Parent> addCard,
-                           Pair<EditCardCtrl, Parent> editCard,
-                           Pair<AddListCtrl, Parent> addList,
-                           Pair<CardCtrl, Parent> card,
-                           Pair<ListCtrl, Parent> list,
-                           Pair<AdminPasswordCtrl, Parent> adminPassword
+    public void initialize(Stage primaryStage
     ) {
         this.primaryStage = primaryStage;
-        this.serverConnectCtrl = serverConnect.getKey();
-        this.serverConnect = new Scene(serverConnect.getValue());
 
-        this.boardListCtrl = boardList.getKey();
-        this.boardList = new Scene(boardList.getValue());
-
-        this.addBoardCtrl = addBoard.getKey();
-        this.addBoard = new Scene(addBoard.getValue());
-
-        this.boardCtrl = board.getKey();
-        this.board = new Scene(board.getValue());
-
-        this.addCardCtrl = addCard.getKey();
-        this.addCard = new Scene(addCard.getValue());
-
-        this.editCardCtrl = editCard.getKey();
-        this.editCard = new Scene(editCard.getValue());
-
-        this.cardCtrl = card.getKey();
-        this.card = new Scene(card.getValue());
-
-        this.addListCtrl = addList.getKey();
-        this.addList = new Scene(addList.getValue());
-
-        this.listCtrl = list.getKey();
-        this.list = new Scene(list.getValue());
-
-        this.adminPasswordCtrl = adminPassword.getKey();
-        this.adminPassword = new Scene(adminPassword.getValue());
-
-        this.secondStage = new Stage();
-
-        showServerConnect();
         primaryStage.show();
     }
 
-
-    public void showServerConnect() {
-        primaryStage.setTitle("Talio: Connect to a Server");
-        primaryStage.setScene(serverConnect);
-    }
-
-    public void showBoardList() {
-        primaryStage.setTitle("Talio: Boards");
-        primaryStage.setScene(boardList);
-        boardListCtrl.loadBoards();
-    }
-
-    public void showAddBoard() {
-        secondStage.setTitle("Talio: Add a Board");
-        secondStage.setScene(addBoard);
-        secondStage.show();
-    }
-
-    public void closeAddBoard() {
-        secondStage.close();
-    }
-
-    public void closeAddBoardSuccess(Board board) {
-        secondStage.close();
-        boardListCtrl.addToJoinedBoards(board);
-    }
-
-    public void showAdminPassword() {
-        secondStage.setTitle("Talio: Admin Log In");
-        secondStage.setScene(adminPassword);
-        secondStage.show();
-    }
-
-    public void closeAdminPassword() {
-        secondStage.close();
-    }
-
-    public void showBoard(Board boardObject) {
-        primaryStage.setTitle("Talio: Board");
-        primaryStage.setScene(board);
-        boardCtrl.setBoard(boardObject);
-        boardCtrl.loadLists();
-    }
-
-    public void showAddCard(commons.List list) {
-        secondStage.setTitle("Talio: addCard");
-        secondStage.setScene(addCard);
-        addCardCtrl.setList(list);
-        secondStage.show();
-    }
-
-    public void closeAddCard() {
-        secondStage.close();
-    }
-
-
-    public void showEditCard(commons.Card card) {
-        secondStage.setTitle("Talio: Edit Card");
-        secondStage.setScene(editCard);
-        editCardCtrl.setCard(card);
-        secondStage.show();
-    }
-
-    public void closeEditCard() {
-        secondStage.close();
-    }
-
-    public void showAddList(Board board) {
-        secondStage.setTitle("Talio: AddList");
-        secondStage.setScene(addList);
-        secondStage.show();
-        addListCtrl.setBoard(board);
-    }
-
-    public void closeAddList() {
-        secondStage.close();
-    }
-
-
-    public void setWebsocketSessions() {
-        boardListCtrl.setWebSocketSessions();
-        boardCtrl.setWebsocketSessions();
-    }
-
-    public void setAdmin(boolean isAdmin) {
-        boardListCtrl.setAdmin(isAdmin);
-    }
-
-    public void registerBoard() {
-        boardCtrl.register();
-    }
-
     public void stop() {
-        boardCtrl.stop();
+
     }
-
-
 }
