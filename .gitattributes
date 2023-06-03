@@ -1,3 +1,4 @@
 client/build/* linguist-vendored
 commons/build/* linguist-vendored
 server/build/* linguist-vendored
+*.html linguist-vendored
