@@ -73,7 +73,10 @@ public class House {
     public void changeMate(int room, Mate mate) {
         if (room > size) throw new IndexOutOfBoundsException("Room number is too big for the size of the House");
         if (room <= 0) throw new IndexOutOfBoundsException("There is no room number 0 or lower");
+        if (mates.get(room - 1) != null)
+            mates.get(room - 1).setHouse(null);
         mates.set(room - 1, mate);
+        mate.setHouse(this);
     }
 
     /**

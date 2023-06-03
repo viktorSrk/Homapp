@@ -68,9 +68,25 @@ class HouseTest {
         h.changeMate(1, mate);
         assertEquals(mate, h.getMates().get(0));
         assertEquals(5, h.getMates().size());
+        Mockito.verify(mate).setHouse(h);
         h.changeMate(5, mate2);
         assertEquals(mate2, h.getMates().get(4));
         assertEquals(5, h.getMates().size());
+        Mockito.verify(mate2).setHouse(h);
+    }
+
+    @Test
+    public void changeMate2() {
+        House h = new House(5);
+        h.changeMate(1, mate);
+        assertEquals(mate, h.getMates().get(0));
+        assertEquals(5, h.getMates().size());
+        Mockito.verify(mate).setHouse(h);
+        h.changeMate(1, mate2);
+        assertEquals(mate2, h.getMates().get(0));
+        assertEquals(5, h.getMates().size());
+        Mockito.verify(mate).setHouse(null);
+        Mockito.verify(mate2).setHouse(h);
     }
 
     @Test
