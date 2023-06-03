@@ -25,7 +25,8 @@ public class HouseController {
 
     @GetMapping("/{id}")
     public ResponseEntity<House> getById(@PathVariable("id") long id) {
-        if (id < 0 || !repo.existsById(id)) {
+        if (id < 0
+                || !repo.existsById(id)) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(repo.findById(id).get());
@@ -38,6 +39,8 @@ public class HouseController {
     }
     @PostMapping(path = { "", "/" })
     public ResponseEntity<House> add(@RequestBody House house) {
+        if (house == null)
+            return ResponseEntity.badRequest().build();
         House saved = repo.save(house);
         return ResponseEntity.ok(saved);
     }
@@ -51,6 +54,9 @@ public class HouseController {
 
     @DeleteMapping(path = { "", "/" })
     public ResponseEntity<House> delete(@RequestBody House house) {
+        if (house == null
+                || !repo.existsById(house.getId()))
+            return ResponseEntity.badRequest().build();
         repo.delete(house);
         return ResponseEntity.ok(house);
     }
