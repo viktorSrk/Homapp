@@ -8,6 +8,7 @@ client/build/reports/tests/test/classes/* linguist-vendored
 client/build/reports/tests/test/css/* linguist-vendored
 client/build/reports/tests/test/js/* linguist-vendored
 client/build/reports/tests/test/packages/* linguist-vendored
+client/build/** linguist-vendored
 
 commons/build/* linguist-vendored
 commons/build/jacocoHtml/* linguist-vendored
@@ -17,6 +18,7 @@ commons/build/reports/tests/test/classes/* linguist-vendored
 commons/build/reports/tests/test/css/* linguist-vendored
 commons/build/reports/tests/test/js/* linguist-vendored
 commons/build/reports/tests/test/packages/* linguist-vendored
+commons/build/** linguist-vendored
 
 server/build/* linguist-vendored
 server/build/jacocoHtml/* linguist-vendored
@@ -27,3 +29,4 @@ server/build/reports/tests/test/classes/* linguist-vendored
 server/build/reports/tests/test/css/* linguist-vendored
 server/build/reports/tests/test/js/* linguist-vendored
 server/build/reports/tests/test/packages/* linguist-vendored
+server/build/** linguist-vendored
