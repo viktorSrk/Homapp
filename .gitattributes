@@ -1,14 +1,29 @@
 client/build/* linguist-vendored
 client/build/jacocoHtml/* linguist-vendored
+client/build/jacocoHtml/client/* linguist-vendored
 client/build/jacocoHtml/client.scenes/* linguist-vendored
 client/build/jacocoHtml/client.utils/* linguist-vendored
-client/build/jacocoHtml/client/* linguist-vendored
+client/build/jacocoHtml/jacoco-ressources/* linguist-vendored
+client/build/reports/tests/test/classes/* linguist-vendored
+client/build/reports/tests/test/css/* linguist-vendored
+client/build/reports/tests/test/js/* linguist-vendored
+client/build/reports/tests/test/packages/* linguist-vendored
 
 commons/build/* linguist-vendored
 commons/build/jacocoHtml/* linguist-vendored
 commons/build/jacocoHtml/commons/* linguist-vendored
+commons/build/jacocoHtml/jacoco-ressources/* linguist-vendored
+commons/build/reports/tests/test/classes/* linguist-vendored
+commons/build/reports/tests/test/css/* linguist-vendored
+commons/build/reports/tests/test/js/* linguist-vendored
+commons/build/reports/tests/test/packages/* linguist-vendored
 
 server/build/* linguist-vendored
 server/build/jacocoHtml/* linguist-vendored
 server/build/jacocoHtml/server/* linguist-vendored
 server/build/jacocoHtml/server.api/* linguist-vendored
+server/build/jacocoHtml/jacoco-ressources/* linguist-vendored
+server/build/reports/tests/test/classes/* linguist-vendored
+server/build/reports/tests/test/css/* linguist-vendored
+server/build/reports/tests/test/js/* linguist-vendored
+server/build/reports/tests/test/packages/* linguist-vendored
