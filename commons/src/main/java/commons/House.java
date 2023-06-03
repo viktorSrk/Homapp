@@ -1,6 +1,7 @@
 package commons;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
@@ -73,6 +74,15 @@ public class House {
                 .append(mates, house.mates)
                 .append(size, house.size)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(id)
+                .append(mates)
+                .append(size)
+                .toHashCode();
     }
 
     @Override
